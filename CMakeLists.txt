@@ -77,3 +77,55 @@ if(RLP_BUILD_TESTS)
     add_test_case(example)
 endif()
 
+# ------------------------------------------------------------------------------
+# MkDocs Documentation Targets
+# ------------------------------------------------------------------------------
+
+option(RLP_BUILD_DOCS "Enable MkDocs documentation targets" ON)
+if(RLP_BUILD_DOCS)
+    find_program(PYTHON_EXECUTABLE python3 REQUIRED)
+
+    set(DOCS_VENV        ${CMAKE_SOURCE_DIR}/.venv)
+    set(DOCS_ACTIVATE    ${DOCS_VENV}/bin/activate)
+    set(DOCS_REQUIREMENTS ${CMAKE_SOURCE_DIR}/requirements.txt)
+    set(DOCS_BASE_URL    http://127.0.0.1:9000/blog)
+
+    # Create virtual environment + install requirements
+    add_custom_target(docs_venv
+        COMMAND ${CMAKE_COMMAND} -E echo "Setting up Python virtual environment"
+        COMMAND ${PYTHON_EXECUTABLE} -m venv ${DOCS_VENV}
+        COMMAND ${DOCS_VENV}/bin/pip install --upgrade pip
+        COMMAND ${DOCS_VENV}/bin/pip install -r ${DOCS_REQUIREMENTS}
+        BYPRODUCTS ${DOCS_ACTIVATE}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Creating .venv and installing MkDocs dependencies"
+        VERBATIM
+    )
+
+    # Serve documentation
+    add_custom_target(docs_serve
+        COMMAND ${CMAKE_COMMAND} -E echo "Starting MkDocs server at ${DOCS_BASE_URL}"
+        COMMAND ${DOCS_VENV}/bin/mkdocs serve --livereload --dev-addr=127.0.0.1:9000
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        DEPENDS docs_venv
+        COMMENT "Serving MkDocs site"
+        USES_TERMINAL
+    )
+
+    # Build static site
+    add_custom_target(docs_build
+        COMMAND ${DOCS_VENV}/bin/mkdocs build
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        DEPENDS docs_venv
+        COMMENT "Building MkDocs site"
+        VERBATIM
+    )
+
+    # Clean docs artifacts
+    add_custom_target(docs_clean
+        COMMAND ${CMAKE_COMMAND} -E rm -rf ${DOCS_VENV}
+        COMMAND ${CMAKE_COMMAND} -E rm -rf ${CMAKE_SOURCE_DIR}/site
+        COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_SOURCE_DIR}/docs/assets/social/*.png
+        COMMENT "Cleaning documentation artifacts"
+    )
+endif()

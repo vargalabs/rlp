@@ -29,6 +29,8 @@ Performance follows from this: $\text{throughput} \approx \frac{\text{useful wor
 cmake -DCMAKE_BUILD_TYPE=Debug -DRLP_BUILD_TESTS=ON -S . -B build # configure (debug + tests)
 cmake --build build --parallel                                    # build everything
 cd build && ctest --output-on-failure                             # run tests
+cmake --build build --target docs_build                           # install mkdocs locally
+cmake --build build --target docs_serve                           # run webserver @ http://127.0.0.1:9000/
 ```
 
 ## Installation
