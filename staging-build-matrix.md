@@ -6,16 +6,6 @@
 [![GitHub release](https://img.shields.io/github/v/release/vargalabs/rlp.svg)](https://github.com/vargalabs/rlp/releases)
 [![Documentation](https://img.shields.io/badge/docs-stable-blue)](https://vargalabs.github.io/rlp)
 
-## Design Principles
-
-RLP is built for environments where **correctness** is not a feature — it is a **constraint**. Every transformation is **deterministic**. Every **byte** has a reason to exist. There are no **hidden allocations**, no **implicit conversions**, and no **undefined behavior** hiding behind convenience. The library favors **structure** over heuristics:
-
-- types are mapped **explicitly**, not guessed  
-- encoding is **canonical**, not context-dependent  
-- failures are **surfaced**, not deferred  
-
-Performance follows from this: $\text{throughput} \approx \frac{\text{useful work}}{\text{branching} + \text{ambiguity} + \text{copies}}$ So the design removes **branching**, **ambiguity**, and unnecessary **copies**. This is not a framework. It is a small, **predictable** layer between **typed data** and **bytes** — intended for systems where **reproducibility**, **auditability**, and **latency** matter more than abstraction. If something looks simple, it is because the complexity was **removed**, not hidden.
-
 ## Build Matrix
 
 | OS / Compiler | GCC 13      | GCC 14      | GCC 15      | Clang 17      | Clang 18      | Clang 19      |Clang 20       |
@@ -23,30 +13,6 @@ Performance follows from this: $\text{throughput} \approx \frac{\text{useful wor
 | Ubuntu 22.04  |![gcc13][200]|![gcc14][201]|![gcc15][202]|![clang17][250]|![clang18][251]|![clang19][252]|![clang20][253]|
 | Ubuntu 24.04  |![gcc13][300]|![gcc14][301]|![gcc15][302]|![clang17][350]|![clang18][351]|![clang19][352]|![clang20][353]|
 
-## Development
-
-```bash
-cmake -DCMAKE_BUILD_TYPE=Debug -DRLP_BUILD_TESTS=ON -S . -B build # configure (debug + tests)
-cmake --build build --parallel                                    # build everything
-cd build && ctest --output-on-failure                             # run tests
-```
-
-## Installation
-```bash
-sudo apt install build-essential cmake
-cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
-cmake --build build --parallel
-sudo cmake --install build
-```
-
-## Usage
-After installation, RLP is available as a standard CMake package:
-
-```cmake
-find_package(rlp REQUIRED)
-add_executable(app main.cpp)
-target_link_libraries(app PRIVATE rlp::rlp)
-```
 
 [200]: https://vargalabs.github.io/rlp/badges/ubuntu-22.04-gcc-13.svg
 [201]: https://vargalabs.github.io/rlp/badges/ubuntu-22.04-gcc-14.svg

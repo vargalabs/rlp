@@ -1,0 +1,67 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# data
+*.h5
+*.gz
+*.csv
+
+# Other
+*.prof
+*.aux
+*.json
+docs/html/
+data
+.vscode/
+.cache/
+compile_commands.json
+
+src/iex2h5
+
+build/
+.venv
+site/
+
+/overrides/
+/badges/
+/assets/
+/download-demo/
+/search/
+/spec/
+/.nojekyll
+/*.html
+/*.xml
+
+include/licenses.hpp
+
+examples/python/__pycache__/
